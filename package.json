@@ -1,0 +1,34 @@
+{
+  "name": "cache-service",
+  "version": "1.0.0",
+  "description": "",
+  "main": "src/server.js",
+  "scripts": {
+    "start:dev": "nodemon src/server",
+    "test": "jest"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@koa/cors": "^3.3.0",
+    "@koa/router": "^10.1.1",
+    "axios": "^0.26.1",
+    "dotenv": "^16.0.0",
+    "eventemitter2": "^6.4.5",
+    "koa": "^2.13.4",
+    "koa-jwt": "^4.0.3",
+    "uuid": "^8.3.2",
+    "winston": "^3.7.2"
+  },
+  "devDependencies": {
+    "eslint": "^8.13.0",
+    "eslint-config-airbnb-base": "^15.0.0",
+    "eslint-config-prettier": "^8.5.0",
+    "eslint-plugin-import": "^2.26.0",
+    "eslint-plugin-prettier": "^4.0.0",
+    "jest": "^27.5.1",
+    "nodemon": "^2.0.15",
+    "prettier": "^2.6.2"
+  }
+}
