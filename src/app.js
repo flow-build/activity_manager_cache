@@ -1,5 +1,6 @@
 const Koa = require('koa');
-const { _logger, koaLogger, db } = require('./utils');
+const { _logger, koaLogger, db, onMessageQueue } = require('./utils');
+const middlewares = require('./middlewares');
 const router = require('./router');
 const mqtt = require('./mqtt');
 const { Queue } = require('./services/cache');
@@ -9,40 +10,28 @@ const startServer = async (port) => {
 
   app.use(koaLogger(_logger));
 
+  app.use(async function errorHandler(ctx, next) {
+    try {
+      ctx.db = db;
+      await next();
+    } catch (error) {
+      ctx.status = 500;
+      if (error && error.status) {
+        ctx.status = error.status;
+      }
+    }
+  });
+
   app.use(
     router({
-      middlewares: [],
+      middlewares: [middlewares.jwtMiddleware],
     })
   );
 
   const queue = new Queue(db);
 
   await mqtt.connect();
-  await mqtt.onMessage(async (topic, message) => {
-    try {
-      _logger.info(`[mqtt] message received topic: [${topic}]`);
-
-      if (topic.endsWith('/am/create') || topic.endsWith('/am/finished')) {
-        const activity_manager = JSON.parse(message.toString());
-
-        _logger.info(
-          `[mqtt] message added on queue ${JSON.stringify(activity_manager)}`
-        );
-
-        queue.push({
-          topic,
-          activity_manager,
-          actor_id: activity_manager.props.result.actor_id,
-        });
-
-        if (!queue.running) {
-          await queue.processQueue();
-        }
-      }
-    } catch (err) {
-      _logger.error(`[mqtt] error on process message`);
-    }
-  });
+  await mqtt.onMessage(onMessageQueue(queue));
   await mqtt.subscribe('/process/#');
 
   return app.listen(port, () => {
