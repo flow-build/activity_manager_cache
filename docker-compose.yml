@@ -1,0 +1,17 @@
+version: "3"
+
+services:
+  postgres:
+    image: postgres:11.4
+    container_name: cache_db
+    restart: always
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: cache_service
+    ports:
+      - 5432:5432
+
+networks:
+  default:
+    driver: bridge

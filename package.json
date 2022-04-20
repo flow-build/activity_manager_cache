@@ -5,6 +5,7 @@
   "main": "src/server.js",
   "scripts": {
     "start:dev": "nodemon src/server",
+    "migrations": "knex --env ${KNEX_ENV} --knexfile knexfile.js migrate:latest",
     "test": "jest"
   },
   "keywords": [],
@@ -16,8 +17,10 @@
     "axios": "^0.26.1",
     "dotenv": "^16.0.0",
     "eventemitter2": "^6.4.5",
+    "knex": "^1.0.7",
     "koa": "^2.13.4",
     "koa-jwt": "^4.0.3",
+    "pg": "^8.7.3",
     "uuid": "^8.3.2",
     "winston": "^3.7.2"
   },
