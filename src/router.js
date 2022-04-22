@@ -10,8 +10,9 @@ module.exports = (opts = {}) => {
     router.use(middleware);
   }
 
-  router.get('/processes/:id/activity');
-  router.get('/processes/activityManager/:id');
+  router.get('/activities/available', ct.act.activities);
+  router.get('/processes/:id/activity', ct.act.activity);
+  router.get('/processes/activityManager/:id', ct.act.activity_manager);
 
   return router.routes();
 };

@@ -24,7 +24,7 @@ const startServer = async (port) => {
 
   app.use(
     router({
-      middlewares: [middlewares.jwtMiddleware],
+      middlewares: [middlewares.jwtMiddleware, middlewares.captureActorData],
     })
   );
 
